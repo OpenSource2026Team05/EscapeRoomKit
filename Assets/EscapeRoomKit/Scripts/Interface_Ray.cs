@@ -1,0 +1,12 @@
+using UnityEngine;
+
+namespace EscapeRoomKit
+{
+    public interface IRayInteractable
+    {
+        void OnRayEnter();
+        void OnRayStay();
+        void OnRayExit();
+        void OnRayClick();
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "name": "EscapeRoomKit.Runtime",
+    "rootNamespace": "EscapeRoomKit",
+    "references": [
+        "Unity.InputSystem",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

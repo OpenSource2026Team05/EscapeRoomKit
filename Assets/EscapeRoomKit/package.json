@@ -1,0 +1,33 @@
+{
+  "name": "com.yourname.escape-room-kit",
+  "version": "0.1.0",
+  "displayName": "Escape Room Kit",
+  "description": "A Unity toolkit for building escape room games. Provides player controller, interactable objects (doors, locks, puzzles, keys), inventory system, and UI utilities.",
+  "unity": "6000.0",
+  "unityRelease": "0b1",
+  "documentationUrl": "https://github.com/yourname/escape-room-kit",
+  "changelogUrl": "https://github.com/yourname/escape-room-kit/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/yourname/escape-room-kit/blob/main/LICENSE.md",
+  "dependencies": {
+    "com.unity.inputsystem": "1.0.0",
+    "com.unity.textmeshpro": "3.0.0"
+  },
+  "keywords": [
+    "escape-room",
+    "puzzle",
+    "interaction",
+    "game-kit"
+  ],
+  "author": {
+    "name": "Your Name",
+    "email": "your@email.com",
+    "url": "https://github.com/yourname"
+  },
+  "samples": [
+    {
+      "displayName": "Demo Scene",
+      "description": "A sample escape room scene demonstrating all built-in interactables.",
+      "path": "Samples~/Demo"
+    }
+  ]
+}
