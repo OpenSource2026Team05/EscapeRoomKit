@@ -5,32 +5,15 @@ using UnityEngine.InputSystem;
 
 namespace EscapeRoomKit
 {
-    public class Object_Keypad_2 : Object_FixCamera
+    public class Object_Keypad_2 : Keypad
     {
-        [Header("Buttons")]
-        [SerializeField] List<Object_Keypad_Button> buttons;
-        [SerializeField] Object_Keypad_Button submit_button;
-        [SerializeField] LayerMask button_layer;
 
         [Header("Answer")]
-        [SerializeField] List<int> answer_list;
+        [SerializeField] protected List<int> answer_list;
 
         HashSet<int> answer;
 
         HashSet<int> input;
-
-        [Header("Unlock Event")]
-        [SerializeField] UnityEvent UnlockEvent;
-
-        bool isActive;
-
-        InputAction click;
-
-        Collider col;
-
-        [Header("Sounds")]
-        [SerializeField] List<AudioClip> clips;
-        Play_Audio audio_player;
 
         void Start()
         {
@@ -52,15 +35,6 @@ namespace EscapeRoomKit
             }
 
             input = new HashSet<int>();
-        }
-
-        void InitButtons()
-        {
-            for (int i = 0; i < buttons.Count; i++)
-            {
-                buttons[i].Init(i);
-            }
-            submit_button.Init(-1);
         }
 
         public override void OnFixed()
@@ -89,43 +63,7 @@ namespace EscapeRoomKit
             input.Clear();
         }
 
-        public void SetActiveInput(bool active)
-        {
-            isActive = active;
-
-            if (active)
-            {
-                click.performed += ctx => OnClick();
-                click.Enable();
-            }
-            else
-            {
-                click.performed -= ctx => OnClick();
-                click.Disable();
-            }
-        }
-
-        public void OnClick()
-        {
-            if (!isActive) return;
-
-            Vector2 mousePosition = Mouse.current.position.ReadValue();
-
-            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 0.5f, button_layer))
-            {
-                var button = hit.collider.GetComponent<Object_Keypad_Button>();
-
-                if (button != null)
-                {
-                    PressButton(button);
-                }
-            }
-        }
-
-        void PressButton(Object_Keypad_Button button)
+        public override void PressButton(KeypadButton button)
         {
             int n = button.GetId();
 
@@ -145,13 +83,29 @@ namespace EscapeRoomKit
 
                     button.Pressed();
                 }
+                else
+                {
+                    input.Remove(n);
+
+                    button.Released();
+                }
             }
         }
 
-        protected virtual void CheckAnswer()
+        public override void CheckAnswer()
         {
-            if (input.SetEquals(answer)) UnlockEvent?.Invoke();
-            else input.Clear();
+            if (input.SetEquals(answer))
+            {
+                UnlockEvent?.Invoke();
+
+                player.GetComponent<Player_FixCamera>().UnFixCamera();
+            }
+            else
+            {
+                FailEvent?.Invoke();
+
+                input.Clear();
+            }
 
             for (int i = 0; i < buttons.Count; i++)
             {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EscapeRoomKit
 {
-    public class Object_Keypad_Button_2 : Object_Keypad_Button
+    public class Object_Keypad_Button_2 : KeypadButton
     {
         public override void Pressed()
         {

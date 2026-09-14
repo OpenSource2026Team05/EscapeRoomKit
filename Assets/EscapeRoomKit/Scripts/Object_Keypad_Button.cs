@@ -4,46 +4,16 @@ using UnityEngine.Events;
 
 namespace EscapeRoomKit
 {
-    public class Object_Keypad_Button : MonoBehaviour
+    public class Object_Keypad_Button : KeypadButton
     {
-        [Header("Materials")]
-        [SerializeField] protected Material[] materials;
-
-        protected MeshRenderer mesh;
-        Collider col;
-
-        protected int id;
-
-        [Header("Pressed Event")]
-        [SerializeField] protected UnityEvent OnPressed;
-
-        public virtual void Pressed()
+        public override void Pressed()
         {
             OnPressed?.Invoke();
 
             StartCoroutine(ChangeMaterial());
         }
 
-        public virtual void Released() { }
-
-        public void Init(int id)
-        {
-            this.id = id;
-
-            if (mesh == null) mesh = GetComponent<MeshRenderer>();
-            mesh.material = materials[0];
-
-            SetActive(false);
-        }
-
-        public int GetId() { return  id; }
-
-        public void SetActive(bool active)
-        {
-            if (col == null) col = GetComponent<Collider>();
-
-            col.enabled = active;
-        }
+        public override void Released() { }
 
         IEnumerator ChangeMaterial()
         {

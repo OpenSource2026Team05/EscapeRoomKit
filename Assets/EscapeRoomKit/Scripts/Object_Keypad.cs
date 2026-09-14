@@ -7,7 +7,7 @@ using TMPro;
 
 namespace EscapeRoomKit
 {
-    public class Object_Keypad : Object_FixCamera
+    public class Object_Keypad : Keypad
     {
         [Header("Input Panel")]
         [SerializeField] bool usePanel;
@@ -16,31 +16,11 @@ namespace EscapeRoomKit
         [Header("Input Setting")]
         [SerializeField] int max_input_size = 4;
 
-        [Header("Buttons")]
-        [SerializeField] List<Object_Keypad_Button> buttons;
-        [SerializeField] Object_Keypad_Button submit_button;
-        [SerializeField] LayerMask button_layer;
 
         [Header("Answer")]
         [SerializeField] List<int> answer;
 
         List<int> input;
-
-        [Header("Unlock Event")]
-        [SerializeField] UnityEvent UnlockEvent;
-
-        [Header("Fail Event")]
-        [SerializeField] UnityEvent FailEvent;
-
-        bool isActive;
-
-        InputAction click;
-
-        Collider col;
-
-        [Header("Sounds")]
-        [SerializeField] List<AudioClip> clips;
-        Play_Audio audio_player;
 
         void Start()
         {
@@ -58,15 +38,6 @@ namespace EscapeRoomKit
             col = GetComponent<Collider>();
 
             audio_player = GetComponent<Play_Audio>();
-        }
-
-        void InitButtons()
-        {
-            for(int i=0;i<buttons.Count;i++)
-            {
-                buttons[i].Init(i);
-            }
-            submit_button.Init(-1);
         }
 
         public override void OnFixed()
@@ -99,43 +70,7 @@ namespace EscapeRoomKit
             if (usePanel) text_input.text = "";
         }
 
-        public void SetActiveInput(bool active)
-        {
-            isActive = active;
-
-            if (active)
-            {
-                click.performed += ctx => OnClick();
-                click.Enable();
-            }
-            else
-            {
-                click.performed -= ctx => OnClick();
-                click.Disable();
-            }
-        }
-
-        public void OnClick()
-        {
-            if (!isActive) return;
-
-            Vector2 mousePosition = Mouse.current.position.ReadValue();
-
-            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 0.5f, button_layer))
-            {
-                var button = hit.collider.GetComponent<Object_Keypad_Button>();
-
-                if (button != null)
-                {
-                    PressButton(button);
-                }
-            }
-        }
-
-        void PressButton(Object_Keypad_Button button)
+        public override void PressButton(KeypadButton button)
         {
             int n = button.GetId();
 
@@ -157,7 +92,7 @@ namespace EscapeRoomKit
             }
         }
 
-        protected virtual void CheckAnswer()
+        public override void CheckAnswer()
         {
             if(answer.SequenceEqual(input))
             {

@@ -3,34 +3,33 @@ using UnityEngine;
 
 namespace EscapeRoomKit
 {
-    public class Object_Door : MonoBehaviour, IRayInteractable
+    public class Object_Door_Locked : Door
     {
-        [Header("Animation")]
-        public Animator animator;
-
         [Header("잠김")]
         public bool isLocked;
-
-        [Header("사운드")]
-        public AudioClip audio_open;
         public AudioClip audio_locked;
+        public ALocked locked_type;
 
-        bool isOpen = false;
-
-        private Play_Audio audio_player;
-
-        void Start()
+        public override void OnRayClick()
         {
-            audio_player = GetComponent<Play_Audio>();
+            if (isLocked) CheckDoor();
+
+            else if (isOpen) CloseDoor();
+            else OpenDoor();
         }
 
-        public void OnRayEnter() { }
-        public void OnRayStay() { }
-        public void OnRayExit() { }
-        public void OnRayClick()
+        public void CheckDoor()
         {
-            if (isOpen) CloseDoor();
-            else OpenDoor();
+            if (locked_type.CheckLock())
+            {
+                OpenDoor();
+
+                isLocked = false;
+            }
+            else
+            {
+                audio_player.PlayAudio(audio_locked);
+            }
         }
 
         public void UnlockDoor()
@@ -39,39 +38,6 @@ namespace EscapeRoomKit
             Debug.Log("비밀번호 일치! 문이 열립니다.");
             OpenDoor();
         }
-
-        public void OpenDoor()
-        {
-            if (animator == null || isOpen) return;
-            if (isLocked)
-            {
-                Object_KeyLocked keylocked = GetComponent<Object_KeyLocked>();
-                if (keylocked != null)
-                {
-                    keylocked.OnInteract();
-                    return;
-                }
-
-                audio_player?.PlayAudio(audio_locked);
-                return;
-            }
-
-            isOpen = true;
-
-            animator.SetInteger("Open", 1);
-
-            audio_player?.PlayAudio(audio_open);
-        }
-
-        public void CloseDoor()
-        {
-            if (animator == null || !isOpen) return;
-
-            isOpen = false;
-
-            animator.SetInteger("Open", 0);
-
-            audio_player?.PlayAudio(audio_open);
-        }
+        
     }
 }
