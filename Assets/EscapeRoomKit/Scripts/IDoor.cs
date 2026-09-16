@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace EscapeRoomKit
 {
-    public abstract class Door : MonoBehaviour, IRayInteractable
+    public abstract class Door : MonoBehaviour
     {
         [Header("Animation")]
         public Animator animator;
@@ -12,18 +12,7 @@ namespace EscapeRoomKit
 
         protected bool isOpen = false;
 
-        protected  Play_Audio audio_player;
-
-        void Start()
-        {
-            audio_player = GetComponent<Play_Audio>();
-        }
-
-        public void OnRayEnter() { }
-        public void OnRayStay() { }
-        public void OnRayExit() { }
-
-        public abstract void OnRayClick();
+        protected Play_Audio audio_player;
 
         public void OpenDoor()
         {

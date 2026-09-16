@@ -8,7 +8,7 @@ namespace EscapeRoomKit
     public abstract class Keypad: Object_FixCamera
     {
         [Header("Buttons")]
-        [SerializeField] protected List<Object_Keypad_Button> buttons;
+        [SerializeField] protected List<KeypadButton> buttons;
         [SerializeField] protected Object_Keypad_Button submit_button;
         [SerializeField] protected LayerMask button_layer;
 
@@ -17,6 +17,8 @@ namespace EscapeRoomKit
 
         [Header("Fail Event")]
         [SerializeField] protected UnityEvent FailEvent;
+
+        protected bool isLocked = true;
 
         protected bool isActive;
 
@@ -27,6 +29,7 @@ namespace EscapeRoomKit
         [Header("Sounds")]
         [SerializeField] protected List<AudioClip> clips;
         protected Play_Audio audio_player;
+
         public void InitButtons()
         {
             for (int i = 0; i < buttons.Count; i++)

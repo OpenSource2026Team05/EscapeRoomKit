@@ -98,7 +98,7 @@ namespace EscapeRoomKit
             {
                 UnlockEvent?.Invoke();
 
-                player.GetComponent<Player_FixCamera>().UnFixCamera();
+                player.UnFixCamera();
             }
             else
             {

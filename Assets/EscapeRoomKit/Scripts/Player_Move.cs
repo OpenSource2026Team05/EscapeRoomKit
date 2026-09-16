@@ -25,7 +25,7 @@ namespace EscapeRoomKit
         public float crouchSpeed = 0.8f;
         public float jumpHeight = 1f;
         public float gravity = -9.81f;
-        public float friction = 0.9f;
+        public float friction = 0.0f;
 
         [Header("Crouch")]
         public float crouchHeight = 1.0f;
@@ -194,13 +194,6 @@ namespace EscapeRoomKit
                 cameraAnimator.SetFloat("MoveSpeed", currentMoveSpeed, 0.1f, Time.deltaTime);
             }
         }
-
-        public void SwitchMoveLock()
-        {
-            if (moveLocked) SetMoveLock(false);
-            else SetMoveLock(true);
-        }
-
         public void SetMoveLock(bool locked)
         {
             moveLocked = locked;

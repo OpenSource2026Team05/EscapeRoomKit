@@ -10,12 +10,6 @@ namespace EscapeRoomKit
         [Header("상호작용 최대 거리")]
         public float dist;
 
-        [Header("화면 고정")]
-        public Player_FixCamera fix;
-
-        [Header("물건 잡기")]
-        public Player_Grab grab;
-
         [Header("UI")]
         public Scene_UI_Manager SceneUI;
 
@@ -55,21 +49,24 @@ namespace EscapeRoomKit
                 {
                     if (CurrentTarget != Interactable)
                     {
-                        CurrentTarget?.GetComponent<IRayInteractable>().OnRayExit();
+                        if (CurrentTarget != null && CurrentTarget.GetComponent<IRayEnterExit>() != null)
+                        {
+                            CurrentTarget.GetComponent<IRayEnterExit>().OnRayExit();
+                        }
 
                         CurrentTarget = Interactable;
-                        CurrentTarget.GetComponent<IRayInteractable>().OnRayEnter();
+                        if (CurrentTarget.GetComponent<IRayPlayer>() != null) CurrentTarget.GetComponent<IRayPlayer>().AllocPlayer(gameObject.GetComponent<IPlayer>());
+                        if (CurrentTarget.GetComponent<IRayEnterExit>() != null) CurrentTarget.GetComponent<IRayEnterExit>().OnRayEnter();
                         SceneUI.SwitchCursor(true);
                     }
-
-                    CurrentTarget.GetComponent<IRayInteractable>().OnRayStay();
 
                 }
                 else
                 {
                     if (CurrentTarget != null)
                     {
-                        CurrentTarget.GetComponent<IRayInteractable>().OnRayExit();
+                        if (CurrentTarget.GetComponent<IRayEnterExit>() != null) CurrentTarget.GetComponent<IRayEnterExit>().OnRayExit();
+                        if (CurrentTarget.GetComponent<IRayPlayer>() != null) CurrentTarget.GetComponent<IRayPlayer>().ClearPlayer();
                         CurrentTarget = null;
                         SceneUI.SwitchCursor(false);
                     }
@@ -79,7 +76,8 @@ namespace EscapeRoomKit
             {
                 if (CurrentTarget != null)
                 {
-                    CurrentTarget.GetComponent<IRayInteractable>().OnRayExit();
+                    if (CurrentTarget.GetComponent<IRayEnterExit>() != null) CurrentTarget.GetComponent<IRayEnterExit>().OnRayExit();
+                    if (CurrentTarget.GetComponent<IRayPlayer>() != null) CurrentTarget.GetComponent<IRayPlayer>().ClearPlayer();
                     CurrentTarget = null;
                     SceneUI.SwitchCursor(false);
                 }
@@ -103,19 +101,13 @@ namespace EscapeRoomKit
 
         void Interact()
         {
-            //if (fix.isPlayerFix())
-            //{
-            //    fix.fixObject.UnFixCamera();
-            //    return;
-            //}
-
             if (CurrentTarget != null)
             {
                 CurrentTarget?.GetComponent<IRayInteractable>().OnRayClick();
             }
             else
             {
-                grab.Release();
+                GetComponent<IPlayer>().Release();
             }
         }
     }

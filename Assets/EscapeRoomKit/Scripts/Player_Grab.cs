@@ -53,12 +53,12 @@ namespace EscapeRoomKit
             GrabbingObject = null;
         }
 
-        public void Grab(Object_Item grab)
+        public void Grab(GameObject grab)
         {
             if (isGrabbing) return;
 
             isGrabbing = true;
-            GrabbingObject = grab.gameObject;
+            GrabbingObject = grab;
 
             GrabbingObject.transform.parent = Hand;
 
@@ -109,7 +109,7 @@ namespace EscapeRoomKit
 
         IEnumerator MoveToTargetPos(Transform targetPos, GameObject targetObj)
         {
-            GetComponent<Player_Move>().SetMoveLock(true);
+            GetComponent<IPlayer>().SetMoveLock(true);
 
             targetObj.transform.GetComponent<Collider>().enabled = false;
             targetObj.transform.GetComponent<Rigidbody>().isKinematic = true;
@@ -134,7 +134,7 @@ namespace EscapeRoomKit
                 yield return null;
             }
 
-            GetComponent<Player_Move>().SetMoveLock(false);
+            GetComponent<IPlayer>().SetMoveLock(false);
         }
     }
 }

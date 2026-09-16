@@ -89,9 +89,9 @@ namespace EscapeRoomKit
 
         IEnumerator MoveToFixPosition()
         {
-            GetComponent<Player_Move>().SetMoveLock(true);
+            GetComponent<IPlayer>().SetMoveLock(true);
 
-            GetComponent<Player_Interaction>().DisableInteract();
+            GetComponent<IPlayer>().DisableInteract();
 
             if (hand != null) hand.GetComponent<Collider>().isTrigger = true;
 
@@ -133,9 +133,9 @@ namespace EscapeRoomKit
                 yield return null;
             }
 
-            GetComponent<Player_Move>().SetMoveLock(false);
+            GetComponent<IPlayer>().SetMoveLock(false);
 
-            GetComponent<Player_Interaction>().EnableInteract();
+            GetComponent<IPlayer>().EnableInteract();
 
             if (hand != null) hand.GetComponent<Collider>().isTrigger = false;
         }

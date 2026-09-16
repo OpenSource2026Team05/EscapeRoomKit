@@ -4,24 +4,16 @@ using UnityEngine.Events;
 
 namespace EscapeRoomKit
 {
-    public abstract class ALocked : MonoBehaviour, IRayInteractable
+    public abstract class ALocked: MonoBehaviour
     {
         protected bool isLocked = true;
-
-        [Header("Player")]
-        [SerializeField] protected GameObject player;
 
         [Header("Unlock Event")]
         public UnityEvent UnlockEvent;
 
-        public void OnRayEnter() { }
-        public void OnRayStay() { }
-        public void OnRayExit() { }
-        public void OnRayClick() => CheckLock();
+        public abstract bool TryUnlock(IPlayer player);
 
-        public abstract bool CheckLock();
-
-        public void UnLock()
+        public void Unlock()
         {
             isLocked = false;
 

@@ -7,10 +7,10 @@ using System.Collections.Generic;
 namespace EscapeRoomKit
 {
     [RequireComponent(typeof(MeshRenderer))]
-    public class Object_PutOn : MonoBehaviour, IRayInteractable
+    public class Object_PutOn : MonoBehaviour, IRayPlayer, IRayEnterExit
     {
         [Header("Player")]
-        [SerializeField] GameObject player;
+        IPlayer player;
 
         [Header("투명 머터리얼")]
         [SerializeField] Material mat_trans;
@@ -36,9 +36,12 @@ namespace EscapeRoomKit
         }
 
         public void OnRayEnter() => OnEnter();
-        public void OnRayStay() { }
         public void OnRayExit() => OnExit();
         public void OnRayClick() => OnInteract();
+
+        public void AllocPlayer(IPlayer player) { this.player = player; }
+
+        public void ClearPlayer() { this.player = null; }
 
         public virtual void OnPutDown() { }
 
@@ -46,7 +49,7 @@ namespace EscapeRoomKit
 
         public void OnInteract()
         {
-            GameObject player_grabbing = player.GetComponent<Player_Grab>().GetGrabbing();
+            GameObject player_grabbing = player.GetGrabbing();
 
             if (current == null && player_grabbing != null)
             {
@@ -78,22 +81,21 @@ namespace EscapeRoomKit
         {
             mesh.enabled = false;
 
-            StartCoroutine(AfterPutDown(0.5f, player.GetComponent<Player_Grab>().GetGrabbing()));
+            StartCoroutine(AfterPutDown(0.5f, player.GetGrabbing()));
 
-            player.GetComponent<Player_Grab>().PutDown(this.transform);
+            player.PutDown(this.transform);
         }
 
         void PickUp()
         {
-            Object_Item grab = current.GetComponent<Object_Item>();
-            player.GetComponent<Player_Grab>().Grab(grab);
+            player.Grab(current);
 
             StartCoroutine(AfterPickUp(0.5f));
         }
 
         public void OnEnter()
         {
-            GameObject player_grabbing = player.GetComponent<Player_Grab>().GetGrabbing();
+            GameObject player_grabbing = player.GetGrabbing();
 
             if (current == null && player_grabbing != null)
             {

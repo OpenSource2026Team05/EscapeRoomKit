@@ -109,7 +109,7 @@ namespace EscapeRoomKit
             {
                 isInspecting = false;
 
-                player.GetComponent<Player_Interaction>().EnableInteract();
+                player.EnableInteract();
 
                 OnGrab();
             }
@@ -125,9 +125,9 @@ namespace EscapeRoomKit
             col.isTrigger = true;
             if (rigid != null) rigid.isKinematic = true;
 
-            player.GetComponent<Player_Move>().SetMoveLock(true);
+            player.SetMoveLock(true);
 
-            player.GetComponent<Player_Interaction>().DisableInteract();
+            player.DisableInteract();
 
             Vector3 targetPos = mainCamera.transform.position + mainCamera.transform.forward * inspectDistance;
             Quaternion targetRot = Quaternion.LookRotation(mainCamera.transform.forward);
@@ -192,9 +192,9 @@ namespace EscapeRoomKit
             col.isTrigger = false;
 
             isInspecting = false;
-            player.GetComponent<Player_Move>().SetMoveLock(false);
+            player.SetMoveLock(false);
 
-            player.GetComponent<Player_Interaction>().EnableInteract();
+            player.EnableInteract();
         }
     }
 }

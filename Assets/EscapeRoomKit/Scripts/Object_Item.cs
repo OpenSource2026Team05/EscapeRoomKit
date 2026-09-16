@@ -4,11 +4,11 @@ using System.Collections;
 
 namespace EscapeRoomKit
 {
-    public class Object_Item : MonoBehaviour, IRayInteractable
+    public class Object_Item : MonoBehaviour, IRayPlayer
     {
 
         [Header("Player Character")]
-        public GameObject player;
+        protected IPlayer player;
 
         [Header("사운드")]
         public AudioClip[] audio_grap;
@@ -22,14 +22,15 @@ namespace EscapeRoomKit
 
         public void UseItem(GameObject target) { }
 
-        public void OnRayEnter() { }
-        public void OnRayStay() { }
-        public void OnRayExit() { }
+        public void AllocPlayer(IPlayer player) { this.player = player; }
+
+        public void ClearPlayer() { this.player = null; }
+
         public virtual void OnRayClick() => OnGrab();
 
         public void OnGrab()
         {
-            player.GetComponent<Player_Grab>().Grab(this);
+            player.Grab(this.gameObject);
 
             if (audio_player != null)
             {

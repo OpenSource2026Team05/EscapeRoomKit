@@ -10,11 +10,15 @@ namespace EscapeRoomKit
         [Header("Key Object")]
         [SerializeField] List<GameObject> key;
 
-        public override bool CheckLock()
+        IPlayer player;
+
+        public override bool TryUnlock(IPlayer player)
         {
+            this.player = player;
+
             if (isLocked)
             {
-                GameObject player_grabbing = player.GetComponent<Player_Grab>().GetGrabbing();
+                GameObject player_grabbing = this.player.GetGrabbing();
                 if (player_grabbing != null)
                 {
                     return CheckKey(player_grabbing);
@@ -49,7 +53,7 @@ namespace EscapeRoomKit
         {
             if (!k.IsKeyReusable())
             {
-                player.GetComponent<Player_Grab>().RemoveGrabbing();
+                player.RemoveGrabbing();
                 k.gameObject.SetActive(false);
             }
 

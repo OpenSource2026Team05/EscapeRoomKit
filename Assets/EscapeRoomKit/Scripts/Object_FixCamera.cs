@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace EscapeRoomKit
 {
-    public abstract class Object_FixCamera : MonoBehaviour, IRayInteractable
+    public abstract class Object_FixCamera : MonoBehaviour, IRayPlayer
     {
         [Header("Fix Position")]
         public Transform fixPoint;
@@ -13,13 +13,13 @@ namespace EscapeRoomKit
         public Scene_UI_Manager SceneUI;
 
         [Header("Player")]
-        public Player_FixCamera player;
+        protected IPlayer player;
 
-
-        public void OnRayEnter() { }
-        public void OnRayStay() { }
-        public void OnRayExit() { }
         public void OnRayClick() => FixCamera();
+
+        public void AllocPlayer(IPlayer player) { this.player = player; }
+
+        public void ClearPlayer() {  this.player = null; }
 
         public abstract void OnFixed();
 
